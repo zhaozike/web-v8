@@ -4,11 +4,11 @@ module.exports = {
       cwd: '/home/azureuser/wwwroot/website',
       env: {
         NODE_ENV: 'production',
-        PORT: 3000
+        PORT: 3300
       },
       env_test: {
         NODE_ENV: 'test',
-        PORT: 3001
+        PORT: 3301
       },
       name: 'website',
       script: 'server.js'
