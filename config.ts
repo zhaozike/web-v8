@@ -71,7 +71,7 @@ const config = {
     products: [
       {
         // REQUIRED - The product ID from Creem dashboard
-        productId: "prod_3y0ULCx8cjBr8YzMmiyhLy", // Replace with your actual Creem product ID
+        productId: "prod_qR4gaLbaLaU3yA1XLHUfz", // Replace with your actual Creem product ID
         // REQUIRED - Name of the product
         name: "Basic Plan",
         // Description of the product
@@ -90,7 +90,7 @@ const config = {
         ],
       },
       {
-        productId: "prod_3y0ULCx8cjBr8YzMmiyhLy", // Replace with your actual Creem product ID
+        productId: "prod_3ynGemonHDI3Wfinb1uUTO", // Replace with your actual Creem product ID
         isFeatured: true,
         name: "Premium Plan",
         description: "Everything you need for your business",
