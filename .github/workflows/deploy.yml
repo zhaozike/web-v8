@@ -34,6 +34,15 @@ jobs:
       run: npm ci
 
     - name: Build Next.js app
+      env:
+        NEXTAUTH_URL: ${{ env.NEXTAUTH_URL }}
+        NEXTAUTH_SECRET: ${{ env.NEXTAUTH_SECRET }}
+        GOOGLE_ID: ${{ env.GOOGLE_ID }}
+        GOOGLE_SECRET: ${{ env.GOOGLE_SECRET }}
+        RESEND_API_KEY: ${{ env.RESEND_API_KEY }}
+        MONGODB_URI: ${{ env.MONGODB_URI }}
+        CREEM_API_KEY: ${{ env.CREEM_API_KEY }}
+        CREEM_WEBHOOK_SECRET: ${{ env.CREEM_WEBHOOK_SECRET }}
       run: |
         NODE_ENV=${{ env.BUILD_ENV }} npx next build --debug
         
