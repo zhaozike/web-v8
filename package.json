@@ -19,7 +19,7 @@
     "@supabase/ssr": "^0.0.10",
     "@supabase/supabase-js": "^2.38.4",
     "crisp-sdk-web": "^1.0.21",
-    "next": "14.0.3",
+    "next": "^14.0.3",
     "next-auth": "^4.24.5",
     "next-sitemap": "^4.2.3",
     "nextjs-toploader": "^1.6.4",
@@ -27,7 +27,8 @@
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
     "react-tooltip": "^5.21.6",
-    "stripe": "^14.7.0"
+    "stripe": "^14.7.0",
+    "@next-auth/supabase-adapter": "^2.4.1" // 添加Supabase适配器
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -35,10 +36,9 @@
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
-    "eslint-config-next": "14.0.3",
+    "eslint-config-next": "^14.0.3",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
 }
-
