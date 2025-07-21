@@ -8,6 +8,7 @@ import { SessionProvider } from "next-auth/react";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "react-hot-toast";
 import { Tooltip } from "react-tooltip";
+import { AuthProvider } from "@/components/AuthProvider";
 import config from "@/config";
 
 // Crisp customer chat support:
@@ -47,38 +48,42 @@ const CrispChat = (): null => {
 
 // All the client wrappers are here (they can't be in server components)
 // 1. SessionProvider: Allow the useSession from next-auth (find out if user is auth or not)
-// 2. NextTopLoader: Show a progress bar at the top when navigating between pages
-// 3. Toaster: Show Success/Error messages anywhere from the app with toast()
-// 4. Tooltip: Show a tooltip if any JSX element has these 2 attributes: data-tooltip-id="tooltip" data-tooltip-content=""
-// 5. CrispChat: Set Crisp customer chat support (see above)
+// 2. AuthProvider: Supabase authentication provider
+// 3. NextTopLoader: Show a progress bar at the top when navigating between pages
+// 4. Toaster: Show Success/Error messages anywhere from the app with toast()
+// 5. Tooltip: Show a tooltip if any JSX element has these 2 attributes: data-tooltip-id="tooltip" data-tooltip-content=""
+// 6. CrispChat: Set Crisp customer chat support (see above)
 const ClientLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <SessionProvider>
-        {/* Show a progress bar at the top when navigating between pages */}
-        <NextTopLoader color={config.colors.main} showSpinner={false} />
+        <AuthProvider>
+          {/* Show a progress bar at the top when navigating between pages */}
+          <NextTopLoader color={config.colors.main} showSpinner={false} />
 
-        {/* Content inside app/page.js files  */}
-        {children}
+          {/* Content inside app/page.js files  */}
+          {children}
 
-        {/* Show Success/Error messages anywhere from the app with toast() */}
-        <Toaster
-          toastOptions={{
-            duration: 3000,
-          }}
-        />
+          {/* Show Success/Error messages anywhere from the app with toast() */}
+          <Toaster
+            toastOptions={{
+              duration: 3000,
+            }}
+          />
 
-        {/* Show a tooltip if any JSX element has these 2 attributes: data-tooltip-id="tooltip" data-tooltip-content="" */}
-        <Tooltip
-          id="tooltip"
-          className="z-[60] !opacity-100 max-w-sm shadow-lg"
-        />
+          {/* Show a tooltip if any JSX element has these 2 attributes: data-tooltip-id="tooltip" data-tooltip-content="" */}
+          <Tooltip
+            id="tooltip"
+            className="z-[60] !opacity-100 max-w-sm shadow-lg"
+          />
 
-        {/* Set Crisp customer chat support */}
-        <CrispChat />
+          {/* Set Crisp customer chat support */}
+          <CrispChat />
+        </AuthProvider>
       </SessionProvider>
     </>
   );
 };
 
 export default ClientLayout;
+

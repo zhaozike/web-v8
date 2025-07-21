@@ -1,24 +1,60 @@
 {
-  "version": 2,
-  "buildCommand": "pnpm run build",
-  "devCommand": "pnpm run dev",
-  "installCommand": "pnpm install",
   "framework": "nextjs",
+  "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "images": {
-    "domains": [
-      "lh3.googleusercontent.com",
-      "pbs.twimg.com",
-      "images.unsplash.com",
-      "logos-world.net"
-    ],
-    "sizes": [640, 750, 828, 1080, 1200, 1920, 2048, 3840]
-  },
+  "installCommand": "npm install",
+  "devCommand": "npm run dev",
   "env": {
-    "NEXTAUTH_URL": "${NEXTAUTH_URL}",
-    "NEXTAUTH_SECRET": "${NEXTAUTH_SECRET}"
+    "NEXT_PUBLIC_SUPABASE_URL": "@supabase_url",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@supabase_anon_key",
+    "SUPABASE_SERVICE_ROLE_KEY": "@supabase_service_role_key",
+    "NEXT_PUBLIC_SUNA_API_URL": "@suna_api_url",
+    "STRIPE_SECRET_KEY": "@stripe_secret_key",
+    "STRIPE_WEBHOOK_SECRET": "@stripe_webhook_secret",
+    "STRIPE_MONTHLY_PRICE_ID": "@stripe_monthly_price_id",
+    "STRIPE_YEARLY_PRICE_ID": "@stripe_yearly_price_id",
+    "STRIPE_FAMILY_PRICE_ID": "@stripe_family_price_id"
   },
-  "github": {
-    "silent": true
-  }
-} 
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/dashboard",
+      "destination": "/profile",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    }
+  ]
+}
+
