@@ -1,6 +1,3 @@
-
-
-```json
 {
   "name": "manus-storybook-frontend",
   "version": "0.1.0",
@@ -35,7 +32,7 @@
     "@headlessui/react": "^1.7.17",
     "axios": "^1.6.8",
     "daisyui": "^4.10.2",
-    "mongoose": "^8.4.0" // 添加 mongoose 依赖，版本号请选择最新稳定版
+    "mongoose": "^8.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -49,4 +46,3 @@
     "typescript": "^5"
   }
 }
-```
