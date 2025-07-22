@@ -1,17 +1,14 @@
+
+
+```typescript
+// libs/next-auth.ts
 import NextAuth from "next-auth";
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import EmailProvider from "next-auth/providers/email";
-// 移除MongoDB相关导入
-// import { MongoDBAdapter } from "@auth/mongodb-adapter";
-// import config from "@/config";
-// import connectMongo from "./mongo";
-
-// 添加Supabase相关导入
 import { SupabaseAdapter } from "@next-auth/supabase-adapter";
 import { createClient } from "@supabase/supabase-js";
 
-// 创建Supabase客户端
+// 创建 Supabase 客户端用于认证
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -22,11 +19,9 @@ interface NextAuthOptionsExtended extends NextAuthOptions {
 }
 
 export const authOptions: NextAuthOptionsExtended = {
-  // Set any random key in .env.local
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
-      // Follow the "Login with Google" tutorial to get your credentials
       clientId: process.env.GOOGLE_ID!,
       clientSecret: process.env.GOOGLE_SECRET!,
       async profile(profile) {
@@ -39,20 +34,8 @@ export const authOptions: NextAuthOptionsExtended = {
         };
       },
     }),
-    // 移除EmailProvider，因为它需要MongoDB
-    // EmailProvider({
-    //   server: {
-    //     host: "smtp.resend.com",
-    //     port: 465,
-    //     auth: {
-    //       user: "resend",
-    //       pass: process.env.RESEND_API_KEY,
-    //     },
-    //   },
-    //   from: config.resend.fromNoReply,
-    // }),
   ],
-  // 使用Supabase适配器替代MongoDB适配器
+  // 使用 Supabase 适配器进行认证
   adapter: SupabaseAdapter(supabase),
   callbacks: {
     session: async ({ session, token }) => {
@@ -66,4 +49,7 @@ export const authOptions: NextAuthOptionsExtended = {
     strategy: "jwt",
   },
 };
+
+export default NextAuth(authOptions);
+```
 

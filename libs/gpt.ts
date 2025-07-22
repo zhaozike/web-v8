@@ -1,55 +1,44 @@
+
+```typescript
+// libs/gpt.ts
 import axios from 'axios';
 
-// Use this if you want to make a call to OpenAI GPT-4 for instance. userId is used to identify the user on openAI side.
-export const sendOpenAi = async (
-  messages: any[], // TODO: type this
-  userId: number,
-  max = 100,
-  temp = 1
+export const sendSunaAI = async (
+  messages: any[], // 根据 Suna AI 的实际消息格式调整
+  userId: string, // 用户ID，用于 Suna AI 识别用户
+  maxTokens: number = 100,
+  temperature: number = 1
 ) => {
-  const url = 'https://api.openai.com/v1/chat/completions';
+  const sunaApiUrl = process.env.NEXT_PUBLIC_SUNA_API_URL;
+  const sunaApiKey = process.env.SUNA_API_KEY; // 假设 Suna AI 使用单独的 API Key
 
-  console.log('Ask GPT >>>');
-  messages.map((m) =>
-    console.log(' - ' + m.role.toUpperCase() + ': ' + m.content)
-  );
+  if (!sunaApiUrl || !sunaApiKey) {
+    throw new Error('Suna AI API URL or Key is not configured.');
+  }
 
-  const body = JSON.stringify({
-    model: 'gpt-4',
-    messages,
-    max_tokens: max,
-    temperature: temp,
-    user: userId,
-  });
+  const body = {
+    model: 'suna-ai-model', // 根据 Suna AI 实际模型名称调整
+    messages: messages,
+    max_tokens: maxTokens,
+    temperature: temperature,
+    user: userId, // 传递用户ID给 Suna AI
+  };
 
   const options = {
     headers: {
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      'Authorization': `Bearer ${sunaApiKey}`,
       'Content-Type': 'application/json',
     },
   };
 
   try {
-    const res = await axios.post(url, body, options);
-
-    const answer = res.data.choices[0].message.content;
-    const usage = res?.data?.usage;
-
-    console.log('>>> ' + answer);
-    console.log(
-      'TOKENS USED: ' +
-        usage?.total_tokens +
-        ' (prompt: ' +
-        usage?.prompt_tokens +
-        ' / response: ' +
-        usage?.completion_tokens +
-        ')'
-    );
-    console.log('\n');
-
-    return answer;
-  } catch (e) {
-    console.error('GPT Error: ' + e?.response?.status, e?.response?.data);
-    return null;
+    console.log('Asking Suna AI >>>');
+    const response = await axios.post(sunaApiUrl, body, options);
+    console.log('Suna AI Response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error calling Suna AI:', error.response ? error.response.data : error.message);
+    throw error;
   }
 };
+```

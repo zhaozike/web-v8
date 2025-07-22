@@ -1,33 +1,48 @@
-import { NextResponse, NextRequest } from "next/server";
-import connectMongo from "@/libs/mongoose";
-import Lead from "@/models/Lead";
 
-// This route is used to store the leads that are generated from the landing page.
-// The API call is initiated by <ButtonLead /> component
-// Duplicate emails just return 200 OK
-export async function POST(req: NextRequest) {
-  await connectMongo();
 
-  const body = await req.json();
+```typescript
+// app/api/lead/route.ts
+import dbConnect from '@/libs/mongoose'; // 导入 MongoDB 连接函数
+import Lead from '@/models/Lead'; // 导入 Lead 模型
+import { NextRequest, NextResponse } from 'next/server';
 
-  if (!body.email) {
-    return NextResponse.json({ error: "Email is required" }, { status: 400 });
-  }
-
+export async function POST(request: NextRequest) {
   try {
-    // Here you can add your own logic
-    // For instance, sending a welcome email (use the the sendEmail helper function from /libs/resend)
-    // For instance, saving the lead in the database (uncomment the code below)
-
-    // const lead = await Lead.findOne({ email: body.email });
-
-    // if (!lead) {
-    // 	await Lead.create({ email: body.email });
-    // }
-
-    return NextResponse.json({});
-  } catch (e) {
-    console.error(e);
-    return NextResponse.json({ error: e.message }, { status: 500 });
+    await dbConnect(); // 连接 MongoDB
+    
+    const body = await request.json();
+    const { name, email, message } = body;
+    
+    const lead = new Lead({
+      name,
+      email,
+      message
+    });
+    
+    await lead.save();
+    
+    return NextResponse.json({ success: true, lead });
+  } catch (error) {
+    console.error('Error creating lead:', error);
+    return NextResponse.json(
+      { error: 'Failed to create lead' },
+      { status: 500 }
+    );
   }
 }
+
+export async function GET() {
+  try {
+    await dbConnect(); // 连接 MongoDB
+    const leads = await Lead.find({}).sort({ createdAt: -1 });
+    return NextResponse.json(leads);
+  } catch (error) {
+    console.error('Error fetching leads:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch leads' },
+      { status: 500 }
+    );
+  }
+}
+```
+
